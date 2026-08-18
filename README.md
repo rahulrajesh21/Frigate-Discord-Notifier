@@ -1,183 +1,73 @@
-# Frigate Discord Video Notification Service
+# Frigate Discord Video Receiver
 
-A reliable, asynchronous bridge that sends **high-resolution recorded event video clips** from [Frigate NVR](https://github.com/blakeblackshear/frigate) to **Discord** channels via [Frigate-Notify](https://github.com/0x2142/frigate-notify) webhooks and the [`notify-discord`](https://github.com/jlandowner/notify-discord) CLI.
+An asynchronous bridge that sends high-resolution recorded event video clips from [Frigate](https://github.com/blakeblackshear/frigate) NVR directly to [Discord](https://discord.com) channels (Home Assistant not required). Powered by [Frigate-Notify](https://github.com/0x2142/frigate-notify) webhooks, [Flask](https://flask.palletsprojects.com/), and the [notify-discord](https://github.com/jlandowner/notify-discord) CLI.
 
----
-
-## 🎯 Features
-
-- **High-Resolution Event Clips**: Automatically downloads the full-resolution recorded event clip (`/api/events/<EVENT_ID>/clip.mp4`) from Frigate's recording stream rather than the low-res detection substream.
-- **Asynchronous Processing**: Immediately responds with `HTTP 200` to Frigate-Notify webhooks to prevent timeouts or retries while clip recording finalizes in the background.
-- **Clip Readiness & Polling**: Retries fetching clips with configurable backoff while Frigate closes recording segments on disk.
-- **Deduplication Engine**: Built-in in-memory deduplication cache prevents repeated video uploads for the same event ID.
-- **Automatic Frigate Discovery**: Validates `FRIGATE_URL` and auto-discovers active Frigate instances on local Docker bridges (`172.18.0.x`).
-- **Secure by Design**: Zero hardcoded Discord tokens or API credentials. Integrates with `.env`, systemd `EnvironmentFile`, or `~/.notify-discord.json`.
-- **Automatic Temp File Cleanup**: Safely removes temporary MP4 files immediately after upload attempts in all execution branches.
+[**View Documentation**](https://rahulrajesh21.github.io/Frigate-Discord-Notifier/)
 
 ---
 
-## 🏗️ Architecture
+## Features
 
-```
- ┌─────────────────────────────────────────────────────────┐
- │ 🎥 Frigate NVR (0.18+)                                  │
- │   • Channel 101: High-Res Recording (2560x1440 / 1080p) │
- │   • Channel 102: Detection Stream (640x480)             │
- └────────────────────────────┬────────────────────────────┘
-                              │ Detection Trigger
-                              ▼
- ┌─────────────────────────────────────────────────────────┐
- │ 🔔 Frigate-Notify (v0.5.4+)                             │
- │   • Webhook: POST http://<receiver-ip>:5001             │
- └────────────────────────────┬────────────────────────────┘
-                              │ Webhook Event (JSON / Text)
-                              ▼
- ┌─────────────────────────────────────────────────────────┐
- │ 🐍 Frigate Discord Video Receiver (Port 5001)           │
- │   1. Immediate HTTP 200 acknowledgment                  │
- │   2. Deduplication check                                │
- │   3. Background worker: Polls /api/events/<ID>/clip.mp4 │
- │   4. Saves temporary MP4                                │
- │   5. Invokes `notify-discord` CLI with `--file`         │
- │   6. Automatically deletes temp MP4                     │
- └────────────────────────────┬────────────────────────────┘
-                              │ notify-discord CLI
-                              ▼
- ┌─────────────────────────────────────────────────────────┐
- │ 💬 Discord Channel (High-Resolution Video Clip)          │
- └─────────────────────────────────────────────────────────┘
-```
+- **High-Resolution Clips**: Downloads full-resolution recorded event clips (`/api/events/<ID>/clip.mp4`) from Frigate's recording stream rather than low-resolution detection substreams.
+- **Asynchronous Processing**: Responds immediately with `HTTP 200` to webhooks while clip recording finalizes in the background.
+- **Retry & Polling**: Retries fetching clips with configurable backoff while Frigate completes recording segments.
+- **Deduplication Engine**: In-memory cache prevents repeated video uploads for duplicate event triggers.
+- **Auto-Discovery**: Validates and discovers active Frigate instances on local Docker bridges.
 
 ---
 
-## 📦 Prerequisites
+## Quick Start
 
-- Python 3.10+
-- `requests` and `flask`
-- [`notify-discord`](https://github.com/jlandowner/notify-discord) installed at `/usr/local/bin/notify-discord`
+### Docker Compose
 
-To install `notify-discord`:
-```bash
-curl -sSL https://github.com/jlandowner/notify-discord/releases/latest/download/notify-discord-x86_64-unknown-linux-gnu.tgz \
-  | sudo tar -xz -C /usr/local/bin/ notify-discord
-sudo chmod +x /usr/local/bin/notify-discord
-```
-
-Configure your Discord webhook in `~/.notify-discord.json`:
-```json
-{
-  "webhook-url": "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN"
-}
-```
-
----
-
-## 🚀 Installation
-
-### Option A: Systemd Service (Recommended)
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/frigate-discord-video.git
-   cd frigate-discord-video
-   ```
-
-2. **Install Python dependencies:**
-   ```bash
-   pip3 install -r requirements.txt
-   ```
-
-3. **Configure Environment:**
-   ```bash
-   cp .env.example .env
-   # Edit .env to set your FRIGATE_URL and PORT if different from defaults
-   ```
-
-4. **Install Systemd Unit:**
-   ```bash
-   sudo cp frigate-discord-video.service /etc/systemd/system/
-   sudo systemctl daemon-reload
-   sudo systemctl enable frigate-discord-video
-   sudo systemctl start frigate-discord-video
-   ```
-
-5. **Verify Service Status:**
-   ```bash
-   sudo systemctl status frigate-discord-video
-   ```
-
----
-
-### Option B: Docker Container
-
-1. **Configure Environment:**
+1. Copy `.env.example` to `.env`:
    ```bash
    cp .env.example .env
    ```
 
-2. **Start via Docker Compose:**
+2. Set `DISCORD_WEBHOOK_URL` in `.env`:
+   ```ini
+   DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN
+   ```
+
+3. Start the container:
    ```bash
    docker compose up -d --build
    ```
 
----
+### Native Execution
 
-## ⚙️ Frigate-Notify Configuration
-
-Add or update the `webhook` provider under `alerts:` in your Frigate-Notify `config.yml`:
-
-```yaml
-alerts:
-  webhook:
-    enabled: true
-    server: "http://<RECEIVER_HOST_IP>:5001"
-    method: POST
-    headers:
-      - "Content-Type: application/json"
-    template: |
-      {
-        "id": "{{ .ID }}",
-        "camera": "{{ .Camera }}",
-        "label": "{{ .Label }}",
-        "start_time": {{ .StartTime }},
-        "top_score": {{ .TopScore }}
-      }
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python server.py
 ```
 
 ---
 
-## 🧪 Testing
+## Resources & Dependencies
 
-### 1. Health Check
-```bash
-curl -v http://localhost:5001/
-```
-**Expected Response:** `HTTP 200 OK` with `Frigate Discord Video service OK`.
-
-### 2. Test Webhook (Dry-Run Mode)
-```bash
-curl -v -X POST http://localhost:5001/ \
-  -H "Content-Type: application/json" \
-  -d '{"id":"TEST123","camera":"east","label":"person"}'
-```
-**Expected Response:** `HTTP 200 OK` with `is_test: true`. (Dry-run mode skips video download and Discord upload).
+- [Frigate NVR](https://github.com/blakeblackshear/frigate) — Real-time NVR with local AI object detection
+- [Frigate-Notify](https://github.com/0x2142/frigate-notify) — Lightweight alert notification service for Frigate
+- [notify-discord CLI](https://github.com/jlandowner/notify-discord) — CLI tool for sending messages and files to Discord via webhooks
+- [Flask Web Framework](https://flask.palletsprojects.com/) — Lightweight Python WSGI web application framework
+- [Discord Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) — Standard Discord webhook API
 
 ---
 
-## 📋 Logs & Monitoring
+## Documentation
 
-### Systemd Logs
-```bash
-journalctl -u frigate-discord-video -f
-```
+Full installation guides, Systemd unit configuration, Frigate-Notify templates, and troubleshooting details are available on GitHub Pages:
 
-### Docker Logs
-```bash
-docker logs -f frigate-discord-video
-```
+👉 **[https://rahulrajesh21.github.io/Frigate-Discord-Notifier/](https://rahulrajesh21.github.io/Frigate-Discord-Notifier/)**
+
+- [Installation & Prerequisites](docs/setup.md)
+- [Configuration Reference](docs/configuration.md)
+- [Testing & Troubleshooting](docs/testing.md)
 
 ---
 
-## 📄 License
+## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+[MIT](LICENSE)

@@ -5,12 +5,12 @@ Wants=network.target
 
 [Service]
 Type=simple
-User=lenovo
-WorkingDirectory=/home/lenovo/frigate/discord
-EnvironmentFile=-/home/lenovo/frigate/discord/.env
+User=YOUR_USERNAME
+WorkingDirectory=/path/to/frigate-discord-video
+EnvironmentFile=-/path/to/frigate-discord-video/.env
 Environment=PYTHONUNBUFFERED=1
 Environment=PATH=/usr/local/bin:/usr/bin:/bin
-ExecStart=/usr/bin/python3 /home/lenovo/frigate/discord/server.py
+ExecStart=/usr/bin/python3 /path/to/frigate-discord-video/server.py
 Restart=always
 RestartSec=5
 KillMode=process
