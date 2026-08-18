@@ -1,39 +1,38 @@
-# Installation & Setup Guide
-
-This guide details how to install `notify-discord` and deploy the service using either Docker Compose or Systemd.
-
----
+# Installation & Setup
 
 ## Prerequisites
 
-### 1. Python Environment
-Python 3.10+ is required when running natively (outside of Docker).
+### Python
 
-### 2. Install `notify-discord` CLI
-Download the appropriate binary for your system architecture:
+Python 3.10+ is required when running natively (outside Docker).
 
-#### Linux (x86_64)
+### notify-discord CLI
+
+Download the appropriate binary for your platform:
+
+**Linux (x86_64):**
 ```bash
 curl -sSL https://github.com/jlandowner/notify-discord/releases/latest/download/notify-discord-x86_64-unknown-linux-gnu.tgz \
   | sudo tar -xz -C /usr/local/bin/ notify-discord
 sudo chmod +x /usr/local/bin/notify-discord
 ```
 
-#### macOS (Apple Silicon - M1/M2/M3/M4 / ARM64)
+**macOS (Apple Silicon):**
 ```bash
 curl -sSL https://github.com/jlandowner/notify-discord/releases/latest/download/notify-discord-aarch64-apple-darwin.tgz \
   | sudo tar -xz -C /usr/local/bin/ notify-discord
 sudo chmod +x /usr/local/bin/notify-discord
 ```
 
-#### macOS (Intel - x86_64)
+**macOS (Intel):**
 ```bash
 curl -sSL https://github.com/jlandowner/notify-discord/releases/latest/download/notify-discord-x86_64-apple-darwin.tgz \
   | sudo tar -xz -C /usr/local/bin/ notify-discord
 sudo chmod +x /usr/local/bin/notify-discord
 ```
 
-### 3. Configure Webhook Secret
+### Discord Webhook
+
 Create `~/.notify-discord.json` or set `DISCORD_WEBHOOK_URL` in your `.env` file:
 ```json
 {
@@ -43,62 +42,54 @@ Create `~/.notify-discord.json` or set `DISCORD_WEBHOOK_URL` in your `.env` file
 
 ---
 
-## Deployment Options
+## Docker Compose (Recommended)
 
-### Option A: Docker Compose (Recommended)
-
-1. **Copy Environment Configuration:**
+1. Copy and edit the environment file:
    ```bash
    cp .env.example .env
    ```
-   > **Note:** In Docker mode, specify `DISCORD_WEBHOOK_URL` in `.env` as host configuration files (`~/.notify-discord.json`) are not mounted inside the container by default.
 
-2. **Verify Docker Network:**
-   `docker-compose.yml` connects to an external network named `frigate_default`. Ensure this network exists or create it:
+   **Note:** In Docker mode, `DISCORD_WEBHOOK_URL` must be set in `.env` because host config files (`~/.notify-discord.json`) are not mounted inside the container.
+
+2. Verify the Docker network exists. `docker-compose.yml` connects to an external network named `frigate_default`. Ensure it exists or create it:
    ```bash
    docker network create frigate_default
    ```
+   If your Frigate container uses a different network name, edit `networks` in `docker-compose.yml` accordingly.
 
-3. **Start Container:**
+3. Start the container:
    ```bash
    docker compose up -d --build
    ```
 
 ---
 
-### Option B: Systemd Service (Linux)
+## Systemd Service (Linux)
 
-1. **Clone Repository & Setup Virtual Environment:**
+1. Clone and set up:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/frigate-discord-video.git
-   cd frigate-discord-video
+   git clone https://github.com/rahulrajesh21/Frigate-Discord-Notifier.git
+   cd Frigate-Discord-Notifier
    python3 -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
    ```
 
-2. **Configure Environment:**
+2. Configure environment:
    ```bash
    cp .env.example .env
    # Edit .env with your FRIGATE_URL, DISCORD_WEBHOOK_URL, and PORT
    ```
 
-3. **Configure & Enable Systemd Unit:**
-   Edit `frigate-discord-video.service` to match your user and installation directory:
+3. Edit `frigate-discord-video.service` to match your system:
    ```ini
-   [Unit]
-   Description=Frigate Discord Video Notification Service
-   After=network.target docker.service
-
-   [Service]
-   Type=simple
-   User=YOUR_USERNAME
-   WorkingDirectory=/path/to/frigate-discord-video
-   EnvironmentFile=-/path/to/frigate-discord-video/.env
-   ExecStart=/path/to/frigate-discord-video/venv/bin/python3 /path/to/frigate-discord-video/server.py
-   Restart=always
+   User=your_username
+   WorkingDirectory=/path/to/Frigate-Discord-Notifier
+   EnvironmentFile=-/path/to/Frigate-Discord-Notifier/.env
+   ExecStart=/path/to/Frigate-Discord-Notifier/venv/bin/python3 /path/to/Frigate-Discord-Notifier/server.py
    ```
-   Then enable and start the unit:
+
+4. Enable and start:
    ```bash
    sudo cp frigate-discord-video.service /etc/systemd/system/
    sudo systemctl daemon-reload

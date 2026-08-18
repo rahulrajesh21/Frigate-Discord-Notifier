@@ -1,40 +1,40 @@
-# Testing & Monitoring Guide
+# Testing & Monitoring
 
 ## Endpoints
 
-- **`GET /`**: Health Check Endpoint
-- **`POST /`**: Webhook Receiver Endpoint
+- `GET /` — Health check
+- `POST /` — Webhook receiver
 
 ---
 
-## Verification Commands
+## Health Check
 
-### 1. Service Health Check
-Verify that the service is running and listening:
+Verify the service is running:
 ```bash
 curl -v http://localhost:5001/
 ```
-**Expected Response**: `HTTP 200 OK` with body `Frigate Discord Video service OK`.
+Expected: `HTTP 200 OK` with body `Frigate Discord Video service OK`.
 
-### 2. Dry-Run Webhook Test
-Simulate a Frigate-Notify test payload without triggering clip downloads or Discord uploads:
+## Dry-Run Webhook Test
+
+Simulate a test event without triggering clip downloads or Discord uploads:
 ```bash
 curl -v -X POST http://localhost:5001/ \
   -H "Content-Type: application/json" \
   -d '{"id":"TEST123","camera":"front","label":"person"}'
 ```
-**Expected Response**: `HTTP 200 OK` with JSON `{"is_test": true, "status": "accepted"}`.
+Expected: `HTTP 200 OK` with `{"is_test": true, "status": "accepted"}`.
 
 ---
 
-## Logs & Monitoring
+## Logs
 
-### Docker Logs
+### Docker
 ```bash
 docker logs -f frigate-discord-video
 ```
 
-### Systemd Logs
+### Systemd
 ```bash
 journalctl -u frigate-discord-video -f
 ```
