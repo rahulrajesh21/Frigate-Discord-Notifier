@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,25 @@
   <meta name="description" content="{{ site.description }}">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
   <!-- TOP NAVBAR -->
   <header class="navbar">
     <div class="navbar-left">
       <button id="mobile-toggle" class="mobile-toggle" aria-label="Toggle navigation">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
       </button>
       <a href="index.html" class="brand">
         <div class="brand-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="4"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="4" />
+            <polygon points="10 8 16 12 10 16 10 8" />
+          </svg>
         </div>
         <span>Frigate Discord</span>
         <span class="brand-badge">v1.0.0</span>
@@ -27,7 +36,10 @@
 
     <div class="navbar-right">
       <button class="search-trigger" aria-label="Search documentation">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
         <span>Search docs...</span>
         <span class="kbd">⌘K</span>
       </button>
@@ -40,8 +52,12 @@
         <span id="theme-toggle-icon"></span>
       </button>
 
-      <a href="https://github.com/rahulrajesh21/Frigate-Discord-Notifier" target="_blank" rel="noopener" class="icon-button" aria-label="GitHub Repository">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      <a href="https://github.com/rahulrajesh21/Frigate-Discord-Notifier" target="_blank" rel="noopener"
+        class="icon-button" aria-label="GitHub Repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </svg>
       </a>
     </div>
   </header>
@@ -55,7 +71,8 @@
         <div class="sidebar-heading">Getting Started</div>
         <ul class="sidebar-list">
           <li>
-            <a href="index.html" class="sidebar-link {% if page.url == '/index.html' or page.url == '/' %}active{% endif %}">
+            <a href="index.html"
+              class="sidebar-link {% if page.url == '/index.html' or page.url == '/' %}active{% endif %}">
               <span>Overview</span>
             </a>
           </li>
@@ -71,7 +88,8 @@
         <div class="sidebar-heading">Configuration</div>
         <ul class="sidebar-list">
           <li>
-            <a href="configuration.html" class="sidebar-link {% if page.url contains 'configuration' %}active{% endif %}">
+            <a href="configuration.html"
+              class="sidebar-link {% if page.url contains 'configuration' %}active{% endif %}">
               <span>Configuration</span>
             </a>
           </li>
@@ -104,34 +122,34 @@
         <!-- FOOTER NAV -->
         <div class="doc-footer-nav">
           {% if page.url contains 'setup' %}
-            <a href="index.html" class="footer-nav-card">
-              <span class="label">Previous</span>
-              <span class="title">← Overview</span>
-            </a>
-            <a href="configuration.html" class="footer-nav-card" style="text-align: right;">
-              <span class="label">Next</span>
-              <span class="title">Configuration →</span>
-            </a>
+          <a href="index.html" class="footer-nav-card">
+            <span class="label">Previous</span>
+            <span class="title">← Overview</span>
+          </a>
+          <a href="configuration.html" class="footer-nav-card" style="text-align: right;">
+            <span class="label">Next</span>
+            <span class="title">Configuration →</span>
+          </a>
           {% elsif page.url contains 'configuration' %}
-            <a href="setup.html" class="footer-nav-card">
-              <span class="label">Previous</span>
-              <span class="title">← Installation & Setup</span>
-            </a>
-            <a href="testing.html" class="footer-nav-card" style="text-align: right;">
-              <span class="label">Next</span>
-              <span class="title">Testing & Monitoring →</span>
-            </a>
+          <a href="setup.html" class="footer-nav-card">
+            <span class="label">Previous</span>
+            <span class="title">← Installation & Setup</span>
+          </a>
+          <a href="testing.html" class="footer-nav-card" style="text-align: right;">
+            <span class="label">Next</span>
+            <span class="title">Testing & Monitoring →</span>
+          </a>
           {% elsif page.url contains 'testing' %}
-            <a href="configuration.html" class="footer-nav-card">
-              <span class="label">Previous</span>
-              <span class="title">← Configuration</span>
-            </a>
+          <a href="configuration.html" class="footer-nav-card">
+            <span class="label">Previous</span>
+            <span class="title">← Configuration</span>
+          </a>
           {% else %}
-            <div></div>
-            <a href="setup.html" class="footer-nav-card" style="text-align: right;">
-              <span class="label">Next</span>
-              <span class="title">Installation & Setup →</span>
-            </a>
+          <div></div>
+          <a href="setup.html" class="footer-nav-card" style="text-align: right;">
+            <span class="label">Next</span>
+            <span class="title">Installation & Setup →</span>
+          </a>
           {% endif %}
         </div>
       </main>
@@ -151,8 +169,12 @@
   <div id="search-modal-backdrop" class="search-modal-backdrop">
     <div class="search-modal">
       <div class="search-input-wrapper">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" class="search-input" placeholder="Search documentation..." autocomplete="off">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search documentation..."
+          autocomplete="off">
         <span class="kbd">ESC</span>
       </div>
       <div id="search-results" class="search-results">
@@ -161,24 +183,9 @@
     </div>
   </div>
 
-  <!-- DEMO PREVIEW MODAL -->
-  <div id="demo-modal-backdrop" class="search-modal-backdrop" onclick="closeDemoModal()">
-    <div class="search-modal demo-modal" onclick="event.stopPropagation()">
-      <h3>Frigate Discord Alert Demo</h3>
-      <p>Here is an example of a high-resolution video clip notification posted directly to Discord:</p>
-      <div class="demo-preview-box">
-        <div class="demo-discord-embed">
-          <strong style="color: #38bdf8;">🚨 Frigate Alert</strong><br>
-          📷 <strong>Camera:</strong> backyard_cam<br>
-          🎯 <strong>Object:</strong> person<br>
-          🆔 <strong>Event ID:</strong> 1724000000.1787037739<br>
-          📹 <em>Attached: 1080p MP4 recording clip</em>
-        </div>
-      </div>
-      <button class="close-btn" onclick="closeDemoModal()">Close Demo</button>
-    </div>
-  </div>
+
 
   <script src="assets/js/main.js"></script>
 </body>
+
 </html>
