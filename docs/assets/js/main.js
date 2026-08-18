@@ -145,6 +145,11 @@ function initSearch() {
       snippet: "Frigate Discord Video Receiver - A complete and local notification bridge that sends high-resolution recorded event video clips from Frigate NVR to Discord channels."
     },
     {
+      title: "Why This Service Is Needed",
+      url: "index.html#why-this-service-is-needed",
+      snippet: "Frigate-Notify snapshot limitations, clip recording write delays, webhook timeouts, and multipart video upload handling."
+    },
+    {
       title: "Installation & Setup - Prerequisites",
       url: "setup.html#prerequisites",
       snippet: "Python 3.10+, notify-discord CLI binaries for Linux x86_64, macOS Apple Silicon, macOS Intel, and Discord Webhook configuration."

@@ -12,6 +12,16 @@ Uses [Frigate-Notify](https://github.com/0x2142/frigate-notify) webhooks to rece
 - Reads credentials from environment variables or config files — zero hardcoded secrets
 - Automatically removes temporary MP4 files after upload attempts
 
+## Why This Service Is Needed
+
+Standard [Frigate-Notify](https://github.com/0x2142/frigate-notify) natively supports sending static image snapshots (`snapshot.jpg`) and text notifications, but cannot send full-resolution video clips (`clip.mp4`) directly for several technical reasons:
+
+- **Clip Availability Delay**: When Frigate detects an object and triggers a notification webhook, the recorded video clip is still actively being written to disk. The finalized `clip.mp4` is not available until after the event recording segment closes.
+- **Webhook Timeouts**: Synchronous notification handlers time out if forced to wait for video segment finalization before responding.
+- **Video Attachment Handling**: Uploading high-resolution MP4 video files to Discord webhooks requires asynchronous multipart file dispatching rather than simple JSON payloads.
+
+This bridge service resolves these constraints by accepting webhooks instantly with `HTTP 200`, polling Frigate's clip API with exponential backoff until recording finalizes, and delivering the high-resolution MP4 file to Discord.
+
 ## Getting Started
 
 - [Installation & Setup](setup.md)
