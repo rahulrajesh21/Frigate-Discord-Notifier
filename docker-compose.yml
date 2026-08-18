@@ -1,0 +1,18 @@
+services:
+  frigate-discord-video:
+    build: .
+    container_name: frigate-discord-video
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      FRIGATE_URL: "http://frigate:5000"
+      PORT: "5001"
+    ports:
+      - "5001:5001"
+    networks:
+      - frigate_default
+
+networks:
+  frigate_default:
+    external: true

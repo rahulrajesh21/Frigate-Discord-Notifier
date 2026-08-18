@@ -1,0 +1,20 @@
+[Unit]
+Description=Frigate Discord Video Notification Service
+After=network.target docker.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=lenovo
+WorkingDirectory=/home/lenovo/frigate/discord
+EnvironmentFile=-/home/lenovo/frigate/discord/.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 /home/lenovo/frigate/discord/server.py
+Restart=always
+RestartSec=5
+KillMode=process
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

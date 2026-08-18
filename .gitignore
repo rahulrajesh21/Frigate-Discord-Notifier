@@ -1,0 +1,43 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+.notify-discord.json
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Media & Temporary files
+*.mp4
+*.mkv
+*.avi
+*.jpg
+*.jpeg
+*.png
+*.log
+/tmp/
+
+# IDE & OS files
+.DS_Store
+.idea/
+.vscode/
