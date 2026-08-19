@@ -2,8 +2,14 @@
 
 ## Endpoints
 
-- `GET /` — Health check
-- `POST /` — Webhook receiver
+| Method | Path | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | Health check (JSON) |
+| `GET` | `/health` | Health check (JSON, alias) |
+| `POST` | `/` | Webhook receiver |
+| `POST` | `/webhook` | Webhook receiver (alias) |
+| `POST` | `/frigate` | Webhook receiver (alias) |
+| `POST` | `/notify` | Webhook receiver (alias) |
 
 ---
 
@@ -11,9 +17,20 @@
 
 Verify the service is running:
 ```bash
-curl -v http://localhost:5001/
+curl http://localhost:5001/health
 ```
-Expected: `HTTP 200 OK` with body `Frigate Discord Video service OK`.
+Expected response:
+```json
+{
+  "status": "healthy",
+  "service": "frigate-discord-video",
+  "frigate_url": "http://172.18.0.2:5000",
+  "discord_webhook_configured": true,
+  "max_file_size_mb": 9.5
+}
+```
+
+---
 
 ## Dry-Run Webhook Test
 

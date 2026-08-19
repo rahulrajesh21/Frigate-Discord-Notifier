@@ -6,39 +6,31 @@
 
 Python 3.10+ is required when running natively (outside Docker).
 
-### notify-discord CLI
+### ffmpeg
 
-Download the appropriate binary for your platform:
+The lossless video splitter requires `ffmpeg` and `ffprobe`. You have two options:
 
-**Linux (x86_64):**
+**Option A — System ffmpeg (recommended for Docker/Linux):**
 ```bash
-curl -sSL https://github.com/jlandowner/notify-discord/releases/latest/download/notify-discord-x86_64-unknown-linux-gnu.tgz \
-  | sudo tar -xz -C /usr/local/bin/ notify-discord
-sudo chmod +x /usr/local/bin/notify-discord
+# Debian/Ubuntu
+sudo apt-get install -y ffmpeg
 ```
 
-**macOS (Apple Silicon):**
-```bash
-curl -sSL https://github.com/jlandowner/notify-discord/releases/latest/download/notify-discord-aarch64-apple-darwin.tgz \
-  | sudo tar -xz -C /usr/local/bin/ notify-discord
-sudo chmod +x /usr/local/bin/notify-discord
-```
+**Option B — Python static-ffmpeg (automatic, bundled in `requirements.txt`):**
 
-**macOS (Intel):**
-```bash
-curl -sSL https://github.com/jlandowner/notify-discord/releases/latest/download/notify-discord-x86_64-apple-darwin.tgz \
-  | sudo tar -xz -C /usr/local/bin/ notify-discord
-sudo chmod +x /usr/local/bin/notify-discord
-```
+`static-ffmpeg` is listed in `requirements.txt` and is loaded automatically by `server.py` at startup. No system install needed.
 
 ### Discord Webhook
 
-Create `~/.notify-discord.json` or set `DISCORD_WEBHOOK_URL` in your `.env` file:
-```json
-{
-  "webhook-url": "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN"
-}
-```
+Create a webhook in your Discord channel settings and either:
+
+- Set `DISCORD_WEBHOOK_URL` in your `.env` file, **or**
+- Create `~/.notify-discord.json`:
+  ```json
+  {
+    "webhook-url": "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN"
+  }
+  ```
 
 ---
 
